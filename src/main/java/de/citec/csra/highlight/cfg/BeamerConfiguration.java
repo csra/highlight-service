@@ -37,7 +37,7 @@ public class BeamerConfiguration extends HighlightTarget {
 
 	private MethodCallConnection<Boolean> getShutterAndLamp() throws RSBException {
 		if (shutterLamp == null) {
-			shutterLamp = new MethodCallConnection<>("/home/living/movinghead", "setPanTilt");
+			shutterLamp = new MethodCallConnection<>("/home/living/movinghead", "setShutterAndLampState");
 		}
 		return shutterLamp;
 	}
