@@ -14,14 +14,14 @@ import rst.geometry.SphericalDirectionFloatType.SphericalDirectionFloat;
  * @author Patrick Holthaus
  * (<a href=mailto:patrick.holthaus@uni-bielefeld.de>patrick.holthaus@uni-bielefeld.de</a>)
  */
-public class BeamerConfiguration extends HighlightTarget {
+public class ProjectorConfiguration extends HighlightTarget {
 
 	private static final long DELAY = 100;
 	private static MethodCallConnection<SphericalDirectionFloat> panTilt;
 	private static MethodCallConnection<Boolean> shutterLamp;
 	private static MethodCallConnection<Boolean> shutter;
 
-	public BeamerConfiguration(SphericalDirectionFloat argument) throws RSBException {
+	public ProjectorConfiguration(final SphericalDirectionFloat argument) throws RSBException {
 		super.setExecution(getPanTilt(), argument);
 		super.setPrepare(getShutterAndLamp(), true, DELAY);
 		super.setReset(getPanTilt(), SphericalDirectionFloat.newBuilder().setAzimuth(180).setElevation(40).build(), DELAY);

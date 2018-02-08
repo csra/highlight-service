@@ -14,6 +14,7 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.openbase.jul.exception.CouldNotPerformException;
 import rsb.InitializeException;
 import rsb.RSBException;
 import rsb.converter.DefaultConverterRepository;
@@ -71,6 +72,7 @@ public class HighlightService {
 		}
 		scope = scope.replaceAll("/$", "");
 
+		// preload configurations
 		Defaults.loadDefaults();
 
 		TaskServer server = new TaskServer(scope, new HighlightTaskHandler());
