@@ -15,6 +15,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.openbase.jul.exception.CouldNotPerformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rsb.InitializeException;
 import rsb.RSBException;
 import rsb.converter.DefaultConverterRepository;
@@ -31,6 +33,8 @@ import rst.spatial.PanTiltAngleType.PanTiltAngle;
  */
 public class HighlightService {
 
+	private final static Logger LOGGER = LoggerFactory.getLogger(HighlightService.class);
+
 	private static String scope = "/home/highlight";
 	private final static String SCOPEVAR = "SCOPE_HIGHLIGHT";
 
@@ -41,7 +45,7 @@ public class HighlightService {
 		DefaultConverterRepository.getDefaultConverterRepository().addConverter(new ProtocolBufferConverter<>(PanTiltAngle.getDefaultInstance()));
 	}
 
-	public static void main(String[] args) throws InitializeException, RSBException, InterruptedException, ParseException {
+	public static void main(String[] args) throws RSBException, InterruptedException, ParseException {
 
 		Options opts = new Options();
 		opts.addOption("scope", true, "RSB scope to listen to.\nDefault: '" + scope + "'");

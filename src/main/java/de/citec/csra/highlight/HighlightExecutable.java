@@ -28,7 +28,7 @@ public class HighlightExecutable extends ExecutableResource {
 	private final Highlightable cfg;
 	private final long duration;
 
-	public HighlightExecutable(Highlightable cfg, long duration) throws RSBException {
+	public HighlightExecutable(Highlightable cfg, long duration) {
 		super("exec[" + cfg.toString() + "]",
 				MAXIMUM,
 				NORMAL,
@@ -43,7 +43,7 @@ public class HighlightExecutable extends ExecutableResource {
 	}
 
 	@Override
-	public Object execute() throws InterruptedException, ExecutionException {
+	public Object execute() throws ExecutionException {
 		try {
 			this.cfg.highlight(getRemote().getRemainingTime() - OVERHEAD);
 			return null;

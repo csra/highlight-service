@@ -34,7 +34,7 @@ import static rst.communicationpatterns.TaskStateType.TaskState.State.INITIATED;
  */
 public class RequestHighlight {
 
-	public static void main(String[] args) throws InitializeException, RSBException, InterruptedException {
+	public static void main(String[] args) throws RSBException, InterruptedException {
 		ConverterRepository rep = DefaultConverterRepository.getDefaultConverterRepository();
 		rep.addConverter(new ProtocolBufferConverter<>(TaskState.getDefaultInstance()));
 		Informer i = Factory.getInstance().createInformer("/home/highlight");

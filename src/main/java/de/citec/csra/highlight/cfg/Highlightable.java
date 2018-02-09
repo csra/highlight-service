@@ -8,13 +8,11 @@ package de.citec.csra.highlight.cfg;
 import java.util.Collection;
 
 /**
- *
  * @author pholthau
  */
 public interface Highlightable {
-	
-	public void highlight(long duration) throws Exception;
-	public Collection<String> getInterfaces();
 
+    void highlight(long duration) throws Exception;
 
+    Collection<String> getInterfaces();
 }

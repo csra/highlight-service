@@ -11,8 +11,8 @@ import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.extension.rsb.scope.ScopeGenerator;
 import org.openbase.jul.extension.rst.processing.MetaConfigPool;
 import org.openbase.jul.extension.rst.processing.MetaConfigVariableProvider;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rsb.InitializeException;
 import rsb.RSBException;
 import rst.domotic.unit.UnitConfigType.UnitConfig;
 import rst.domotic.unit.UnitTemplateType.UnitTemplate.UnitType;
@@ -22,12 +22,10 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class HighlightConfigGenerator {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HighlightConfigGenerator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HighlightConfigGenerator.class);
 
     private static final long TIMEOUT = TimeUnit.SECONDS.toMicros(2);
 
@@ -114,13 +112,14 @@ public class HighlightConfigGenerator {
                         // lookup next light to target
 
                         // 5m lookup radius
-                        Registries.getUnitRegistry().getUnitConfigsByCoordinate(Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig).get(0), LOOKUP_RADIUS, UnitType.LIGHT);
-                        UnitConfig colorableLightConfig = null;
-                        return new ColorableLightConfiguration(colorableLightConfig);
-                    } catch (InitializeException ex) {
-                        Logger.getLogger(Defaults.class.getName()).log(Level.SEVERE, null, ex);
+                        List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinate(Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig), LOOKUP_RADIUS, UnitType.LIGHT);
+                        if (closeUnitList.isEmpty()) {
+                            throw new CouldNotPerformException("Could not find any light close to the given target!");
+                        }
+                        return new LightConfiguration(closeUnitList.get(0));
+                    } catch (CouldNotPerformException ex) {
+                        throw new CouldNotPerformException("Could highlight next light!", ex);
                     }
-                    break;
                 case GAZE:
                     throw new EnumNotSupportedException(modality, this);
                 case GESTURE:

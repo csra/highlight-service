@@ -27,7 +27,7 @@
     <orderEntry type="library" name="Maven: rsb:rst-experimental:0.17.15" level="project" />
     <orderEntry type="library" name="Maven: org.openbase.bco:dal.remote:1.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.openbase.bco:dal.lib:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.remote:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.remote:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.openbase:jul.storage:1.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.openbase:jul.extension.rsb.util:1.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.openbase:jul.processing:1.6.0" level="project" />
@@ -62,35 +62,35 @@
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.util:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.lib:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.app.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.app.lib:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.agent.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.agent.lib:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.device.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.device.lib:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.util:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.lib:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.app.core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.app.lib:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.agent.core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.agent.lib:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.device.core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.device.lib:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.openbase:jul.extension.rst.storage:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.location.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.location.lib:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.location.core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.location.lib:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-math3:3.6.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.scene.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.scene.lib:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.lib:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.unit.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.unit.lib:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.scene.core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.scene.lib:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.lib:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.unit.core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.unit.lib:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.openbase.bco:authentication.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.activity.core:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.activity.lib:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.app.remote:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.agent.remote:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.device.remote:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.location.remote:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.scene.remote:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.remote:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.unit.remote:1.6.0" level="project" />
-    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.activity.remote:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.activity.core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.activity.lib:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.app.remote:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.agent.remote:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.device.remote:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.location.remote:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.scene.remote:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.remote:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.unit.remote:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openbase.bco:registry.user.activity.remote:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.openbase:jul.pattern.trigger:1.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.openbase:jul.interface:1.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.openbase:jul.pattern:1.6.0" level="project" />

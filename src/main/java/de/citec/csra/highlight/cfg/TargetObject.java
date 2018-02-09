@@ -6,23 +6,22 @@
 package de.citec.csra.highlight.cfg;
 
 /**
- *
  * @author Patrick Holthaus
  * (<a href=mailto:patrick.holthaus@uni-bielefeld.de>patrick.holthaus@uni-bielefeld.de</a>)
  */
 public enum TargetObject {
 
-	ENTRANCE,
-	SURFACE,
-	PLANT,
-	TV,
-	ZEN,
-	FLOBI,
-	MEKA,
-	CUPBOARD1,
-	CUPBOARD2,
-	DRAWER1,
-	DRAWER2,
-	WATER,
+    ENTRANCE,
+    SURFACE,
+    PLANT,
+    TV,
+    ZEN,
+    FLOBI,
+    MEKA,
+    CUPBOARD1,
+    CUPBOARD2,
+    DRAWER1,
+    DRAWER2,
+    WATER,
 
 }

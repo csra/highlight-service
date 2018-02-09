@@ -10,20 +10,18 @@ import de.citec.csra.highlight.cfg.Defaults;
 import de.citec.csra.highlight.cfg.HighlightConfigGenerator;
 import de.citec.csra.highlight.cfg.Highlightable;
 import de.citec.csra.highlight.cfg.TargetObject;
-import de.citec.csra.rst.parse.EnumParser;
 import de.citec.csra.rst.parse.HighlightTargetParser;
 import de.citec.csra.task.srv.AbstractTaskHandler;
 import de.citec.csra.task.srv.ExecutableResourceTask;
 import de.citec.csra.task.srv.LocalTask;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
+import org.openbase.jul.exception.printer.LogLevel;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rsb.RSBException;
 import rst.hri.HighlightTargetType.HighlightTarget;
@@ -31,10 +29,17 @@ import rst.hri.HighlightTargetType.HighlightTarget.Modality;
 
 /**
  * @author pholthau
+ * @author mpohling
  */
 public class HighlightTaskHandler extends AbstractTaskHandler {
 
-    private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(HighlightTaskHandler.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HighlightTaskHandler.class);
+    private final HighlightConfigGenerator highlightConfigGenerator;
+
+
+    public HighlightTaskHandler() throws InterruptedException {
+        this.highlightConfigGenerator = new HighlightConfigGenerator();
+    }
 
     @Override
     public LocalTask newLocalTask(final Object description) throws IllegalArgumentException {
@@ -54,20 +59,20 @@ public class HighlightTaskHandler extends AbstractTaskHandler {
         }
     }
 
-    private Set<ExecutableResource> getActions(final HighlightTarget highlightTarget) {
+    private Set<ExecutableResource> getActions(final HighlightTarget highlightTarget) throws InterruptedException {
         final Set<ExecutableResource> actions = new HashSet<>();
 
         // generate actions
-        highlightTarget.getModalityList().forEach((modality) -> {
+        for (final Modality modality : highlightTarget.getModalityList()) {
             Highlightable highlightConfig;
 
             // generate / load highlight config
             try {
-                highlightConfig = HighlightConfigGenerator.generate(highlightTarget.getTargetId(), modality);
+                highlightConfig = highlightConfigGenerator.generate(highlightTarget.getTargetId(), modality);
             } catch (CouldNotPerformException ex) {
-                ExceptionPrinter.printHistory("Could not generate highlight config and use default implementation instead!", ex, LOGGER);
+                ExceptionPrinter.printHistory("Could not generate highlight config via registry and use default configuration instead!", ex, LOGGER, LogLevel.WARN);
 
-                // load default config
+                // load default config as fallback
 //				TargetObject targetObject = new EnumParser<>(TargetObject.class).getValue(highlightTarget.getTargetId().toUpperCase());
                 TargetObject targetObject = TargetObject.valueOf(highlightTarget.getTargetId().toUpperCase());
                 highlightConfig = Defaults.get(targetObject, modality);
@@ -76,9 +81,9 @@ public class HighlightTaskHandler extends AbstractTaskHandler {
             try {
                 actions.add(new HighlightExecutable(highlightConfig, highlightTarget.getDuration().getTime() / 1000l));
             } catch (RSBException ex) {
-                Logger.getLogger(HighlightTaskHandler.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.error("Could not generate action for Target[" + highlightTarget + "]!", ex);
             }
-        });
+        }
         return actions;
     }
 }
