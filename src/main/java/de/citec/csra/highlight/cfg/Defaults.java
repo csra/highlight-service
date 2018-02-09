@@ -75,84 +75,84 @@ public class Defaults {
                     SphericalDirectionFloat spot = SphericalDirectionFloat.getDefaultInstance();
                     switch (targetObject) {
                         case ENTRANCE:
-                            label = "Hallway_0";
+                            label = "ColorableLight-38";
                             gaze = direction(70, 1);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
                             spot = direction(84, 33);
                             break;
                         case SURFACE:
-                            label = "CeilingWindowLamp";
+                            label = "ColorableLight-11";
                             gaze = direction(-55, -15);
                             gst = "all pointing_screen";
                             snd = "Waikiki.ogg";
                             spot = direction(220, 90);
                             break;
                         case ZEN:
-                            label = "SLampRight2";
+                            label = "ColorableLight-20";
                             gaze = direction(-40, -5);
                             gst = "all pointing_screen";
                             snd = "Waikiki.ogg";
                             spot = direction(280, 63);
                             break;
                         case PLANT:
-                            label = "SLampRight2";
+                            label = "ColorableLight-20";
                             gaze = direction(-35, -10);
                             gst = "all pointing_screen";
                             snd = "Waikiki.ogg";
                             spot = direction(294, 74);
                             break;
                         case FLOBI:
-                            label = "Hallway_0";
+                            label = "ColorableLight-38";
                             gaze = direction(70, 1);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
                             spot = direction(84, 33);
                             break;
                         case MEKA:
-                            label = "Table_0";
+                            label = "ColorableLight-9";
                             gaze = null;
                             gst = "all welcoming";
                             snd = "Waikiki.ogg";
                             spot = direction(140, 60);
                             break;
                         case TV:
-                            label = "LLamp6";
+                            label = "ColorableLight-27";
                             gaze = direction(-20, 1);
                             gst = "all pointing_screen";
                             snd = "Waikiki.ogg";
                             spot = direction(335, 70);
                             break;
                         case WATER:
-                            label = "CeilingLamp 1";
+                            label = "ColorableLight-24";
                             gaze = direction(70, -10);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
                             spot = direction(118, 42);
                             break;
                         case CUPBOARD1:
-                            label = "503";
+                            label = "ColorableLight-23";
                             gaze = direction(70, 1);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
                             spot = direction(117, 31);
                             break;
                         case CUPBOARD2:
-                            label = "505";
+                            label = "ColorableLight-28";
                             gaze = direction(70, 1);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
                             spot = direction(109, 28);
                             break;
                         case DRAWER1:
-                            label = "502";
+                            label = "ColorableLight-22";
                             gaze = direction(70, -20);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
                             spot = direction(114, 45);
                             break;
                         case DRAWER2:
-                            label = "507";
+                            label = "ColorableLight-2";
                             gaze = direction(70, -20);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
