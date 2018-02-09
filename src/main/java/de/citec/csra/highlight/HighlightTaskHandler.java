@@ -64,23 +64,23 @@ public class HighlightTaskHandler extends AbstractTaskHandler {
 
         // generate actions
         for (final Modality modality : highlightTarget.getModalityList()) {
-            Highlightable highlightConfig;
-
-            // generate / load highlight config
             try {
-                highlightConfig = highlightConfigGenerator.generate(highlightTarget.getTargetId(), modality);
-            } catch (CouldNotPerformException ex) {
-                ExceptionPrinter.printHistory("Could not generate highlight config via registry and use default configuration instead!", ex, LOGGER, LogLevel.WARN);
+                Highlightable highlightConfig;
 
-                // load default config as fallback
+                // generate / load highlight config
+                try {
+                    highlightConfig = highlightConfigGenerator.generate(highlightTarget.getTargetId(), modality);
+                } catch (CouldNotPerformException ex) {
+                    ExceptionPrinter.printHistory("Could not generate highlight config via registry and use default configuration instead!", ex, LOGGER, LogLevel.WARN);
+
+                    // load default config as fallback
 //				TargetObject targetObject = new EnumParser<>(TargetObject.class).getValue(highlightTarget.getTargetId().toUpperCase());
-                TargetObject targetObject = TargetObject.valueOf(highlightTarget.getTargetId().toUpperCase());
-                highlightConfig = Defaults.get(targetObject, modality);
-            }
+                    TargetObject targetObject = TargetObject.valueOf(highlightTarget.getTargetId().toUpperCase());
+                    highlightConfig = Defaults.get(targetObject, modality);
+                }
 
-            try {
                 actions.add(new HighlightExecutable(highlightConfig, highlightTarget.getDuration().getTime() / 1000l));
-            } catch (RSBException ex) {
+            } catch (Exception ex) {
                 LOGGER.error("Could not generate action for Target[" + highlightTarget + "]!", ex);
             }
         }
