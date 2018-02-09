@@ -37,17 +37,32 @@ public class LightConnection implements RemoteConnection<Stage> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(LightConnection.class);
 
+    private final static long ANIMATION_RATE = 600;
+
     private final long timeout;
     private UnitConfig unitConfig;
     private State originalState;
     private HSBColor originalColor;
 
-    private final HSBColor A_COLOR = HSBColor.newBuilder().setHue(210).setSaturation(100).setBrightness(100).build();
-    private final HSBColor B_COLOR = HSBColor.newBuilder().setHue(180).setSaturation(100).setBrightness(100).build();
+    private final HSBColor BLUE_COLOR = HSBColor.newBuilder().setHue(247).setSaturation(100).setBrightness(100).build();
 
-    public LightConnection(final UnitConfig unitConfig, long timeout) {
-        this.timeout = timeout;
-        this.unitConfig = unitConfig;
+    public LightConnection(final UnitConfig unitConfig, long timeout) throws InstantiationException {
+        try {
+            this.timeout = timeout;
+            this.unitConfig = unitConfig;
+
+            // validate
+            switch (unitConfig.getType()) {
+                case COLORABLE_LIGHT:
+                case DIMMABLE_LIGHT:
+                case LIGHT:
+                    break;
+                default:
+                    throw new InvalidStateException("Registered Unit[" + unitConfig.getLabel() + "] is not a light!");
+            }
+        } catch (CouldNotPerformException ex) {
+            throw new InstantiationException(this, ex);
+        }
     }
 
 
@@ -64,7 +79,6 @@ public class LightConnection implements RemoteConnection<Stage> {
 
     @Override
     public void send(Stage argument) throws Exception {
-
         switch (unitConfig.getType()) {
             case COLORABLE_LIGHT:
                 ColorableLightRemote colorableLight = Units.getFutureUnit(unitConfig, true, Units.COLORABLE_LIGHT).get(timeout, MILLISECONDS);
@@ -76,13 +90,22 @@ public class LightConnection implements RemoteConnection<Stage> {
                         LOGGER.info("Storing light power ''{}'' as ''{}''.", unitConfig.getLabel(), shortString(originalState));
                         originalColor = colorableLight.getHSBColor();
                         LOGGER.info("Storing light color ''{}'' as ''{}''.", colorableLight.getLabel(), shortString(originalColor));
-                        LOGGER.info("Set light color ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(A_COLOR));
-                        colorableLight.setColor(B_COLOR).get(timeout, TimeUnit.MILLISECONDS);
+                        LOGGER.info("Set light color ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(BLUE_COLOR));
+                        colorableLight.setColor(BLUE_COLOR).get(timeout, TimeUnit.MILLISECONDS);
                         break;
                     case EXEC:
-                        LOGGER.info("Set light color ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(A_COLOR));
-                        colorableLight.setColor(A_COLOR).get(timeout, TimeUnit.MILLISECONDS);
-                        //implies power state on
+                        LOGGER.info("Execute light ''{}'' on / off animation.", colorableLight.getLabel());
+                        colorableLight.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        colorableLight.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        colorableLight.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        colorableLight.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        colorableLight.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        colorableLight.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
                         break;
                     case RESET:
                         LOGGER.info("Reset light color ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(originalColor));
@@ -101,12 +124,22 @@ public class LightConnection implements RemoteConnection<Stage> {
                     case PREPARE:
                         originalState = light.getPowerState().getValue();
                         LOGGER.info("Storing dimmer power ''{}'' as ''{}''.", light.getLabel(), shortString(originalState));
-                        LOGGER.info("Set dimmer power ''{}'' to ''{}''.", light.getLabel(), shortString(OFF));
-                        light.setPowerState(PowerState.newBuilder().setValue(OFF).build());
-                        break;
-                    case EXEC:
                         LOGGER.info("Set dimmer power ''{}'' to ''{}''.", light.getLabel(), shortString(ON));
                         light.setPowerState(PowerState.newBuilder().setValue(ON).build());
+                        break;
+                    case EXEC:
+                        LOGGER.info("Execute light ''{}'' on / off animation.", light.getLabel());
+                        light.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        light.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        light.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
                         break;
                     case RESET:
                         LOGGER.info("Reset dimmer power ''{}'' to ''{}''.", light.getLabel(), shortString(originalState));
@@ -115,7 +148,7 @@ public class LightConnection implements RemoteConnection<Stage> {
                 }
                 break;
             default:
-                throw new InvalidStateException("Registerd unit is not a light!");
+                throw new InvalidStateException("Registered unit is not a light!");
         }
     }
 
