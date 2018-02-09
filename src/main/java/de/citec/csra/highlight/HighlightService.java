@@ -14,7 +14,8 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import rsb.InitializeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rsb.RSBException;
 import rsb.converter.DefaultConverterRepository;
 import rsb.converter.ProtocolBufferConverter;
@@ -30,6 +31,8 @@ import rst.spatial.PanTiltAngleType.PanTiltAngle;
  */
 public class HighlightService {
 
+	private final static Logger LOGGER = LoggerFactory.getLogger(HighlightService.class);
+
 	private static String scope = "/home/highlight";
 	private final static String SCOPEVAR = "SCOPE_HIGHLIGHT";
 
@@ -40,7 +43,7 @@ public class HighlightService {
 		DefaultConverterRepository.getDefaultConverterRepository().addConverter(new ProtocolBufferConverter<>(PanTiltAngle.getDefaultInstance()));
 	}
 
-	public static void main(String[] args) throws InitializeException, RSBException, InterruptedException, ParseException {
+	public static void main(String[] args) throws RSBException, InterruptedException, ParseException {
 
 		Options opts = new Options();
 		opts.addOption("scope", true, "RSB scope to listen to.\nDefault: '" + scope + "'");
@@ -71,6 +74,7 @@ public class HighlightService {
 		}
 		scope = scope.replaceAll("/$", "");
 
+		// preload configurations
 		Defaults.loadDefaults();
 
 		TaskServer server = new TaskServer(scope, new HighlightTaskHandler());

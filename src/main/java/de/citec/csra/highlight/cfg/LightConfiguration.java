@@ -10,7 +10,9 @@ import static de.citec.csra.highlight.cfg.Configurable.Stage.INIT;
 import static de.citec.csra.highlight.cfg.Configurable.Stage.PREPARE;
 import static de.citec.csra.highlight.cfg.Configurable.Stage.RESET;
 import de.citec.csra.highlight.com.LightConnection;
+import org.openbase.jul.exception.InstantiationException;
 import rsb.InitializeException;
+import rst.domotic.unit.UnitConfigType.UnitConfig;
 
 /**
  *
@@ -18,8 +20,16 @@ import rsb.InitializeException;
  */
 public class LightConfiguration extends HighlightTarget {
 
-	public LightConfiguration(String name) throws InitializeException {
-		LightConnection li = new LightConnection(name, 1000);
+	public LightConfiguration(final UnitConfig unitConfig) {
+		LightConnection li = new LightConnection(unitConfig, 1000);
+		super.setInit(li, INIT, 50);
+		super.setPrepare(li, PREPARE, 500);
+		super.setExecution(li, EXEC);
+		super.setReset(li, RESET, 50);
+	}
+
+	public LightConfiguration(String alias) throws InterruptedException, InstantiationException {
+		LightConnection li = new LightConnection(alias, 1000);
 		super.setInit(li, INIT, 50);
 		super.setPrepare(li, PREPARE, 500);
 		super.setExecution(li, EXEC);

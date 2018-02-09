@@ -11,8 +11,8 @@ package de.citec.csra.highlight.com;
  */
 public interface RemoteConnection<T> {
 	
-	public void send(T argument) throws Exception;
+	void send(T argument) throws Exception;
 	
-	public String getAddress();
+	String getAddress();
 	
 }
