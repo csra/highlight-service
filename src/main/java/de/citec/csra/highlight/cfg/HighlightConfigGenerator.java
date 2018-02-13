@@ -23,6 +23,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
+ */
 public class HighlightConfigGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HighlightConfigGenerator.class);
@@ -149,13 +152,19 @@ public class HighlightConfigGenerator {
 
                     return new HighlightTarget().setExecution(audioSystemConnection, soundFile);
                 case SPOT_LIGHT:
+                    return new ProjectorConfiguration(targetUnitConfig.getPlacementConfig().getPosition().getTranslation());
                 default:
-                    throw new EnumNotSupportedException(modality, this);
-//                    try {
-//                        return new ProjectorConfiguration(spot);
-//                    } catch (RSBException ex) {
-//                        throw new InvalidStateException("Projector connection error", ex);
-//                    }
+                    switch (targetUnitConfig.getType()) {
+                        // if the target is a light than just use those for highlighting
+                        case LIGHT:
+                        case DIMMER:
+                        case COLORABLE_LIGHT:
+                            return new LightConfiguration(targetUnitConfig);
+                        // otherwise use the projector for highlighting
+                        default:
+                            return new ProjectorConfiguration(targetUnitConfig.getPlacementConfig().getPosition().getTranslation());
+
+                    }
             }
         } catch (final CouldNotPerformException ex) {
             throw new CouldNotPerformException("Could not generate highlight configuration!", ex);

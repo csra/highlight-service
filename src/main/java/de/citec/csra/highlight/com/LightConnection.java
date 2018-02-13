@@ -7,7 +7,6 @@ package de.citec.csra.highlight.com;
 
 import de.citec.csra.highlight.cfg.Configurable.Stage;
 import org.openbase.bco.dal.remote.unit.ColorableLightRemote;
-import org.openbase.bco.dal.remote.unit.DimmableLightRemote;
 import org.openbase.bco.dal.remote.unit.LightRemote;
 import org.openbase.bco.dal.remote.unit.Units;
 import org.openbase.bco.registry.remote.Registries;
@@ -17,7 +16,6 @@ import org.openbase.jul.exception.InvalidStateException;
 import org.openbase.jul.extension.rsb.scope.ScopeGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rsb.InitializeException;
 import rst.domotic.state.PowerStateType.PowerState;
 import rst.domotic.state.PowerStateType.PowerState.State;
 import rst.domotic.unit.UnitConfigType.UnitConfig;
@@ -32,6 +30,7 @@ import static rst.domotic.state.PowerStateType.PowerState.State.ON;
 
 /**
  * @author pholthau
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>s
  */
 public class LightConnection implements RemoteConnection<Stage> {
 

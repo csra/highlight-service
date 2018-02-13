@@ -25,9 +25,8 @@ import rst.hri.HighlightTargetType.HighlightTarget;
 import rst.spatial.PanTiltAngleType.PanTiltAngle;
 
 /**
- *
- * @author Patrick Holthaus
- * (<a href=mailto:patrick.holthaus@uni-bielefeld.de>patrick.holthaus@uni-bielefeld.de</a>)
+ * @author Patrick Holthaus (<a href=mailto:patrick.holthaus@uni-bielefeld.de>patrick.holthaus@uni-bielefeld.de</a>)
+ * @author <a href="mailto:divine@openbase.org">Divine Threepwood</a>
  */
 public class HighlightService {
 
