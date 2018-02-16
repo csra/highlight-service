@@ -17,6 +17,7 @@ import rsb.RSBException;
 import rst.domotic.unit.UnitConfigType.UnitConfig;
 import rst.domotic.unit.UnitTemplateType.UnitTemplate.UnitType;
 import rst.hri.HighlightTargetType.HighlightTarget.Modality;
+import rst.math.Vec3DDoubleType.Vec3DDouble;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -113,9 +114,10 @@ public class HighlightConfigGenerator {
                 case AMBIENT_LIGHT:
                     try {
                         // lookup next light to target
+                        final Vec3DDouble position = Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig);
 
                         // 5m lookup radius
-                        List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinate(Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig), LOOKUP_RADIUS, UnitType.LIGHT);
+                        final List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinate(position, LOOKUP_RADIUS, UnitType.LIGHT);
                         if (closeUnitList.isEmpty()) {
                             throw new CouldNotPerformException("Could not find any light close to the given target!");
                         }
@@ -162,7 +164,7 @@ public class HighlightConfigGenerator {
                             return new LightConfiguration(targetUnitConfig);
                         // otherwise use the projector for highlighting
                         default:
-                            return new ProjectorConfiguration(targetUnitConfig.getPlacementConfig().getPosition().getTranslation());
+                            return new ProjectorConfiguration(Registries.getUnitRegistry().getUnitPositionGlobal(targetUnitConfig));
 
                     }
             }

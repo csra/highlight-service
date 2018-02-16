@@ -29,7 +29,7 @@ public class LightConfiguration extends HighlightTarget {
 		super.setReset(li, RESET, 500);
 	}
 
-	public LightConfiguration(String alias) throws InterruptedException, InstantiationException {
+	public LightConfiguration(final String alias) throws InterruptedException, InstantiationException {
 		LightConnection li = new LightConnection(alias, 1000);
 		super.setInit(li, INIT, 50);
 		super.setPrepare(li, PREPARE, 500);
