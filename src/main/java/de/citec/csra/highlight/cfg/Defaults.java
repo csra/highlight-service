@@ -60,7 +60,7 @@ public class Defaults {
         MethodCallConnection audioSystemConnection = null;
 
         try {
-            audioSystemConnection = new MethodCallConnection("/home/audio/control/radio/", "play");
+            audioSystemConnection = new MethodCallConnection("/citec/csra/home/audio/control/radio/", "play");
         } catch (RSBException ex) {
             ExceptionPrinter.printHistory("Could not load audio system connection!", ex, LOGGER);
         }

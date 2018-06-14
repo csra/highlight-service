@@ -37,7 +37,7 @@ public class RequestHighlight {
 	public static void main(String[] args) throws RSBException, InterruptedException {
 		ConverterRepository rep = DefaultConverterRepository.getDefaultConverterRepository();
 		rep.addConverter(new ProtocolBufferConverter<>(TaskState.getDefaultInstance()));
-		Informer i = Factory.getInstance().createInformer("/home/highlight");
+		Informer i = Factory.getInstance().createInformer("/citec/csra/home/highlight");
 		i.activate();
 		TaskState t = TaskState.newBuilder().
 				setOrigin(SUBMITTER).

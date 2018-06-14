@@ -57,7 +57,7 @@ public class HighlightConfigGenerator {
         }
 
         try {
-            audioSystemConnection = new MethodCallConnection("/home/audio/control/radio/", "play");
+            audioSystemConnection = new MethodCallConnection("/citec/csra/home/audio/control/radio/", "play");
         } catch (RSBException ex) {
             ExceptionPrinter.printHistory("Could not establish audio connection!", ex, LOGGER);
         }

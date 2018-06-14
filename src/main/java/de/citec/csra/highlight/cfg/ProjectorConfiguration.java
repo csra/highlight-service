@@ -57,7 +57,7 @@ public class ProjectorConfiguration extends HighlightTarget {
 
     private MethodCallConnection<Translation> getLookAt() throws RSBException {
         if (lookAt == null) {
-            lookAt = new MethodCallConnection<>("/home/living/movinghead", "lookAt");
+            lookAt = new MethodCallConnection<>("/citec/csra/home/living/movinghead", "lookAt");
         }
         return lookAt;
     }
@@ -65,28 +65,28 @@ public class ProjectorConfiguration extends HighlightTarget {
 
     private MethodCallConnection<SphericalDirectionFloat> getPanTilt() throws RSBException {
         if (panTilt == null) {
-            panTilt = new MethodCallConnection<>("/home/living/movinghead", "setPanTilt");
+            panTilt = new MethodCallConnection<>("/citec/csra/home/living/movinghead", "setPanTilt");
         }
         return panTilt;
     }
 
     private MethodCallConnection<Boolean> getShutterAndLamp() throws RSBException {
         if (shutterLamp == null) {
-            shutterLamp = new MethodCallConnection<>("/home/living/movinghead", "setShutterAndLampState");
+            shutterLamp = new MethodCallConnection<>("/citec/csra/home/living/movinghead", "setShutterAndLampState");
         }
         return shutterLamp;
     }
 
     private MethodCallConnection<Boolean> getShutter() throws RSBException {
         if (shutter == null) {
-            shutter = new MethodCallConnection<>("/home/living/movinghead", "setShutterState");
+            shutter = new MethodCallConnection<>("/citec/csra/home/living/movinghead", "setShutterState");
         }
         return shutter;
     }
 
     private MethodCallConnection<Boolean> setParkingPosition() throws RSBException {
         if (parking == null) {
-            parking = new MethodCallConnection<>("/home/living/movinghead", "setParkingPosition");
+            parking = new MethodCallConnection<>("/citec/csra/home/living/movinghead", "setParkingPosition");
         }
         return parking;
     }

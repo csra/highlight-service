@@ -51,8 +51,8 @@ public class HighlightRequest {
 		try {
 			ExecutorService ex = Executors.newCachedThreadPool();
 			HighlightTarget hlt = HighlightTarget.newBuilder().setDuration(Duration.newBuilder().setTime(6000)).addModality(GAZE).setTargetId(TargetObject.FLOBI.name()).build();
-			RemoteTask t = new RemoteTask("/home/highlight", hlt);
-			RemoteTask t2 = new RemoteTask("/home/highlight", "ENTRANCE,GAZE,GESTURE,7000");
+			RemoteTask t = new RemoteTask("/citec/csra/home/highlight", hlt);
+			RemoteTask t2 = new RemoteTask("/citec/csra/home/highlight", "ENTRANCE,GAZE,GESTURE,7000");
 
 			Set<Future> fs = new HashSet<>();
 

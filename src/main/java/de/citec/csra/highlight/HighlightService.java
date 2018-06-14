@@ -32,7 +32,7 @@ public class HighlightService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HighlightService.class);
     private final static String SCOPEVAR = "SCOPE_HIGHLIGHT";
-    private static final Scope SCOPE = new Scope("/home/highlight");
+    private static final Scope SCOPE = new Scope("/citec/csra/home/highlight");
 
     static {
         DefaultConverterRepository.getDefaultConverterRepository().addConverter(new ProtocolBufferConverter<>(TaskState.getDefaultInstance()));
