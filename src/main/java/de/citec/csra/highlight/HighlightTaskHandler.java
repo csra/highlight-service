@@ -74,14 +74,13 @@ public class HighlightTaskHandler extends AbstractTaskHandler {
                     ExceptionPrinter.printHistory("Could not generate highlight config via registry and use default configuration instead!", ex, LOGGER, LogLevel.WARN);
 
                     // load default config as fallback
-//				TargetObject targetObject = new EnumParser<>(TargetObject.class).getValue(highlightTarget.getTargetId().toUpperCase());
                     TargetObject targetObject = TargetObject.valueOf(highlightTarget.getTargetId().toUpperCase());
                     highlightConfig = Defaults.get(targetObject, modality);
                 }
 
                 actions.add(new HighlightExecutable(highlightConfig, highlightTarget.getDuration().getTime() / 1000l));
             } catch (Exception ex) {
-                LOGGER.error("Could not generate action for Target[" + highlightTarget + "]!", ex);
+                ExceptionPrinter.printHistory("Could not generate action for Target[" + highlightTarget + "]!", ex, LOGGER);
             }
         }
         return actions;

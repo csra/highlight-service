@@ -12,6 +12,7 @@ import de.citec.csra.highlight.com.MethodCallConnection;
 import java.util.EnumMap;
 import java.util.Map;
 
+import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +37,9 @@ public class Defaults {
         CONFIGS.get(targetObject).put(modality, highlightable);
     }
 
-    public static Highlightable get(TargetObject targetObject, Modality modality) {
+    public static Highlightable get(TargetObject targetObject, Modality modality) throws NotAvailableException {
         if (!CONFIGS.containsKey(targetObject)) {
-            CONFIGS.put(targetObject, new EnumMap<>(Modality.class));
+            throw new NotAvailableException("Highlightable", targetObject.name());
         }
         return CONFIGS.get(targetObject).get(modality);
     }
