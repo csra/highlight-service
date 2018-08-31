@@ -54,8 +54,6 @@ public class HighlightService {
             JPService.registerProperty(JPDebugMode.class);
             JPService.parseAndExitOnError(args);
 
-//            scope = scope.replaceAll("/$", "");
-
             // preload configurations
             Defaults.loadDefaults();
 

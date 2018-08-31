@@ -132,21 +132,21 @@ public class Defaults {
                             spot = direction(118, 42);
                             break;
                         case CUPBOARD1:
-                            label = "ColorableLight-23";
+                            label = "ColorableLight-43";
                             gaze = direction(70, 1);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
                             spot = direction(117, 31);
                             break;
                         case CUPBOARD2:
-                            label = "ColorableLight-28";
+                            label = "ColorableLight-18";
                             gaze = direction(70, 1);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
                             spot = direction(109, 28);
                             break;
                         case DRAWER1:
-                            label = "ColorableLight-22";
+                            label = "ColorableLight-28";
                             gaze = direction(70, -20);
                             gst = "all pointing_kitchen";
                             snd = "Waikiki.ogg";
