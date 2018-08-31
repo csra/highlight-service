@@ -39,11 +39,10 @@ public class LightConnection implements RemoteConnection<Stage> {
     private final static long ANIMATION_RATE = 600;
 
     private final long timeout;
-    private UnitConfig unitConfig;
-    private State originalState;
-    private HSBColor originalColor;
-
     private final HSBColor BLUE_COLOR = HSBColor.newBuilder().setHue(247).setSaturation(100).setBrightness(100).build();
+    private UnitConfig unitConfig;
+    private State originalPowerState;
+    private HSBColor originalColor;
 
     public LightConnection(final UnitConfig unitConfig, long timeout) throws InstantiationException {
         try {
@@ -85,15 +84,19 @@ public class LightConnection implements RemoteConnection<Stage> {
                     case INIT:
                         break;
                     case PREPARE:
-                        originalState = colorableLight.getPowerState().getValue();
-                        LOGGER.info("Storing light power ''{}'' as ''{}''.", unitConfig.getLabel(), shortString(originalState));
-                        originalColor = colorableLight.getHSBColor();
-                        LOGGER.info("Storing light color ''{}'' as ''{}''.", colorableLight.getLabel(), shortString(originalColor));
-                        LOGGER.info("Set light color ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(BLUE_COLOR));
-                        colorableLight.setColor(BLUE_COLOR).get(timeout, TimeUnit.MILLISECONDS);
+                        originalPowerState = colorableLight.getPowerState().getValue();
+                        LOGGER.info("Storing light power ''{}'' as ''{}''.", unitConfig.getLabel(), shortString(originalPowerState));
+                        if (originalPowerState == State.ON) {
+                            LOGGER.info("Storing light color ''{}'' as ''{}''.", colorableLight.getLabel(), shortString(originalColor));
+                            originalColor = colorableLight.getHSBColor();
+                        } else {
+                            originalColor = null;
+                        }
                         break;
                     case EXEC:
                         LOGGER.info("Execute light ''{}'' on / off animation.", colorableLight.getLabel());
+                        colorableLight.setColor(BLUE_COLOR).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
                         colorableLight.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
                         colorableLight.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
@@ -107,10 +110,14 @@ public class LightConnection implements RemoteConnection<Stage> {
                         colorableLight.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
                         break;
                     case RESET:
-                        LOGGER.info("Reset light color ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(originalColor));
-                        colorableLight.setColor(originalColor).get(timeout, TimeUnit.MILLISECONDS);
-                        LOGGER.info("Reset light power ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(originalState));
-                        colorableLight.setPowerState(PowerState.newBuilder().setValue(originalState).build()).get(timeout, TimeUnit.MILLISECONDS);
+                        if (originalColor != null) {
+                            LOGGER.info("Reset light color ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(originalColor));
+                            colorableLight.setColor(originalColor).get(timeout, TimeUnit.MILLISECONDS);
+                        } else {
+                            LOGGER.info("Reset light power ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(originalPowerState));
+                            colorableLight.setPowerState(PowerState.newBuilder().setValue(originalPowerState).build()).get(timeout, TimeUnit.MILLISECONDS);
+                        }
+
                         break;
                 }
                 break;
@@ -121,13 +128,14 @@ public class LightConnection implements RemoteConnection<Stage> {
                     case INIT:
                         break;
                     case PREPARE:
-                        originalState = light.getPowerState().getValue();
-                        LOGGER.info("Storing dimmer power ''{}'' as ''{}''.", light.getLabel(), shortString(originalState));
+                        originalPowerState = light.getPowerState().getValue();
+                        LOGGER.info("Storing dimmer power ''{}'' as ''{}''.", light.getLabel(), shortString(originalPowerState));
                         LOGGER.info("Set dimmer power ''{}'' to ''{}''.", light.getLabel(), shortString(ON));
-                        light.setPowerState(PowerState.newBuilder().setValue(ON).build());
                         break;
                     case EXEC:
                         LOGGER.info("Execute light ''{}'' on / off animation.", light.getLabel());
+                        light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
                         light.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
                         light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
@@ -141,8 +149,8 @@ public class LightConnection implements RemoteConnection<Stage> {
                         light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
                         break;
                     case RESET:
-                        LOGGER.info("Reset dimmer power ''{}'' to ''{}''.", light.getLabel(), shortString(originalState));
-                        light.setPowerState(PowerState.newBuilder().setValue(originalState).build()).get(timeout, TimeUnit.MILLISECONDS);
+                        LOGGER.info("Reset dimmer power ''{}'' to ''{}''.", light.getLabel(), shortString(originalPowerState));
+                        light.setPowerState(PowerState.newBuilder().setValue(originalPowerState).build()).get(timeout, TimeUnit.MILLISECONDS);
                         break;
                 }
                 break;

@@ -23,7 +23,6 @@ import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.exception.printer.LogLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rsb.RSBException;
 import rst.hri.HighlightTargetType.HighlightTarget;
 import rst.hri.HighlightTargetType.HighlightTarget.Modality;
 

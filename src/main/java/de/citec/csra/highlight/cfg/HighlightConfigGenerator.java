@@ -29,14 +29,10 @@ import java.util.concurrent.TimeoutException;
  */
 public class HighlightConfigGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HighlightConfigGenerator.class);
-
-    private static final long TIMEOUT = TimeUnit.SECONDS.toMicros(2);
-
-
-    private static final String DEFAULT_NOTIFICATION_SOUND_FILE = "Waikiki.ogg";
     public static final double LOOKUP_RADIUS = 5;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(HighlightConfigGenerator.class);
+    private static final long TIMEOUT = TimeUnit.SECONDS.toMicros(2);
+    private static final String DEFAULT_NOTIFICATION_SOUND_FILE = "Waikiki.ogg";
     private static final String META_CONFIG_KEY_HIGHLIGHT_SOUND_FILE = "HIGHLIGHT_SOUND_FILE";
     private static final String META_CONFIG_KEY_HIGHLIGHT_GESTURE = "HIGHLIGHT_GESTURE";
 
@@ -113,15 +109,25 @@ public class HighlightConfigGenerator {
             switch (modality) {
                 case AMBIENT_LIGHT:
                     try {
-                        // lookup next light to target
-                        final Vec3DDouble position = Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig);
 
-                        // 5m lookup radius
-                        final List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinate(position, LOOKUP_RADIUS, UnitType.LIGHT);
-                        if (closeUnitList.isEmpty()) {
-                            throw new CouldNotPerformException("Could not find any light close to the given target!");
+                        switch (targetUnitConfig.getType()) {
+                            // if the target is a light than just use those for highlighting
+                            case LIGHT:
+                            case DIMMER:
+                            case COLORABLE_LIGHT:
+                                return new LightConfiguration(targetUnitConfig);
+                            default:
+                                // lookup next light to target
+                                final Vec3DDouble position = Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig);
+
+                                // 5m lookup radius
+                                final List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinate(position, LOOKUP_RADIUS, UnitType.LIGHT);
+                                if (closeUnitList.isEmpty()) {
+                                    throw new CouldNotPerformException("Could not find any light close to the given target!");
+                                }
+                                return new LightConfiguration(closeUnitList.get(0));
                         }
-                        return new LightConfiguration(closeUnitList.get(0));
+
                     } catch (CouldNotPerformException ex) {
                         throw new CouldNotPerformException("Could highlight next light!", ex);
                     }
