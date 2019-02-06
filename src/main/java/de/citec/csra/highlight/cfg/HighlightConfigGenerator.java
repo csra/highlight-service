@@ -9,15 +9,15 @@ import org.openbase.jul.exception.InvalidStateException;
 import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
 import org.openbase.jul.extension.rsb.scope.ScopeGenerator;
-import org.openbase.jul.extension.rst.processing.MetaConfigPool;
-import org.openbase.jul.extension.rst.processing.MetaConfigVariableProvider;
+import org.openbase.jul.extension.type.processing.MetaConfigPool;
+import org.openbase.jul.extension.type.processing.MetaConfigVariableProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rsb.RSBException;
-import rst.domotic.unit.UnitConfigType.UnitConfig;
-import rst.domotic.unit.UnitTemplateType.UnitTemplate.UnitType;
+import org.openbase.type.domotic.unit.UnitConfigType.UnitConfig;
+import org.openbase.type.domotic.unit.UnitTemplateType.UnitTemplate.UnitType;
 import rst.hri.HighlightTargetType.HighlightTarget.Modality;
-import rst.math.Vec3DDoubleType.Vec3DDouble;
+import org.openbase.type.math.Vec3DDoubleType.Vec3DDouble;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -103,14 +103,14 @@ public class HighlightConfigGenerator {
             // setup variable pool
             MetaConfigPool variableProvider = new MetaConfigPool();
             variableProvider.register(new MetaConfigVariableProvider("TargetUnitConfig", targetUnitConfig.getMetaConfig()));
-            variableProvider.register(new MetaConfigVariableProvider("TargetUnitType", Registries.getUnitRegistry().getUnitTemplateByType(targetUnitConfig.getType()).getMetaConfig()));
+            variableProvider.register(new MetaConfigVariableProvider("TargetUnitType", Registries.getTemplateRegistry(true).getUnitTemplateByType(targetUnitConfig.getUnitType()).getMetaConfig()));
 
             // generate highlight config related to the given modality
             switch (modality) {
                 case AMBIENT_LIGHT:
                     try {
 
-                        switch (targetUnitConfig.getType()) {
+                        switch (targetUnitConfig.getUnitType()) {
                             // if the target is a light than just use those for highlighting
                             case LIGHT:
                             case DIMMER:
@@ -160,9 +160,9 @@ public class HighlightConfigGenerator {
 
                     return new HighlightTarget().setExecution(audioSystemConnection, soundFile);
                 case SPOT_LIGHT:
-                    return new ProjectorConfiguration(targetUnitConfig.getPlacementConfig().getPosition().getTranslation());
+                    return new ProjectorConfiguration(targetUnitConfig.getPlacementConfig().getPose().getTranslation());
                 default:
-                    switch (targetUnitConfig.getType()) {
+                    switch (targetUnitConfig.getUnitType()) {
                         // if the target is a light than just use those for highlighting
                         case LIGHT:
                         case DIMMER:

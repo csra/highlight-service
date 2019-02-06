@@ -23,7 +23,7 @@ import rst.communicationpatterns.TaskStateType.TaskState;
 import rst.geometry.SphericalDirectionFloatType.SphericalDirectionFloat;
 import rst.geometry.TranslationType.Translation;
 import rst.hri.HighlightTargetType.HighlightTarget;
-import rst.spatial.PanTiltAngleType.PanTiltAngle;
+import org.openbase.type.spatial.PanTiltAngleType.PanTiltAngle;
 
 /**
  * @author Patrick Holthaus (<a href=mailto:patrick.holthaus@uni-bielefeld.de>patrick.holthaus@uni-bielefeld.de</a>)

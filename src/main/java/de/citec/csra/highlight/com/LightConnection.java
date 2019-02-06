@@ -6,27 +6,27 @@
 package de.citec.csra.highlight.com;
 
 import de.citec.csra.highlight.cfg.Configurable.Stage;
-import org.openbase.bco.dal.remote.unit.ColorableLightRemote;
-import org.openbase.bco.dal.remote.unit.LightRemote;
-import org.openbase.bco.dal.remote.unit.Units;
+import org.openbase.bco.dal.remote.layer.unit.ColorableLightRemote;
+import org.openbase.bco.dal.remote.layer.unit.LightRemote;
+import org.openbase.bco.dal.remote.layer.unit.Units;
 import org.openbase.bco.registry.remote.Registries;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.exception.InvalidStateException;
 import org.openbase.jul.extension.rsb.scope.ScopeGenerator;
+import org.openbase.type.vision.HSBColorType.HSBColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rst.domotic.state.PowerStateType.PowerState;
-import rst.domotic.state.PowerStateType.PowerState.State;
-import rst.domotic.unit.UnitConfigType.UnitConfig;
-import rst.vision.HSBColorType.HSBColor;
+import org.openbase.type.domotic.state.PowerStateType.PowerState;
+import org.openbase.type.domotic.state.PowerStateType.PowerState.State;
+import org.openbase.type.domotic.unit.UnitConfigType.UnitConfig;
 
 import java.util.concurrent.TimeUnit;
 
 import static de.citec.csra.rst.util.StringRepresentation.shortString;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static rst.domotic.state.PowerStateType.PowerState.State.OFF;
-import static rst.domotic.state.PowerStateType.PowerState.State.ON;
+import static org.openbase.type.domotic.state.PowerStateType.PowerState.State.OFF;
+import static org.openbase.type.domotic.state.PowerStateType.PowerState.State.ON;
 
 /**
  * @author pholthau
@@ -50,7 +50,7 @@ public class LightConnection implements RemoteConnection<Stage> {
             this.unitConfig = unitConfig;
 
             // validate
-            switch (unitConfig.getType()) {
+            switch (unitConfig.getUnitType()) {
                 case COLORABLE_LIGHT:
                 case DIMMABLE_LIGHT:
                 case LIGHT:
@@ -77,7 +77,7 @@ public class LightConnection implements RemoteConnection<Stage> {
 
     @Override
     public void send(Stage argument) throws Exception {
-        switch (unitConfig.getType()) {
+        switch (unitConfig.getUnitType()) {
             case COLORABLE_LIGHT:
                 ColorableLightRemote colorableLight = Units.getFutureUnit(unitConfig, true, Units.COLORABLE_LIGHT).get(timeout, MILLISECONDS);
                 switch (argument) {

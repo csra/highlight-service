@@ -7,10 +7,9 @@ package de.citec.csra.highlight.cfg;
 
 import de.citec.csra.highlight.com.MethodCallConnection;
 import org.openbase.jul.exception.InstantiationException;
-import org.openbase.jul.exception.InvalidStateException;
 import rsb.RSBException;
 import rst.geometry.SphericalDirectionFloatType.SphericalDirectionFloat;
-import rst.geometry.TranslationType.Translation;
+import org.openbase.type.geometry.TranslationType.Translation;
 
 /**
  * @author Patrick Holthaus(<a href=mailto:patrick.holthaus@uni-bielefeld.de>patrick.holthaus@uni-bielefeld.de</a>)

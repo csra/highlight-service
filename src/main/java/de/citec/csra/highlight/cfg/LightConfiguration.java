@@ -12,7 +12,7 @@ import static de.citec.csra.highlight.cfg.Configurable.Stage.RESET;
 import de.citec.csra.highlight.com.LightConnection;
 import org.openbase.jul.exception.InstantiationException;
 import rsb.InitializeException;
-import rst.domotic.unit.UnitConfigType.UnitConfig;
+import org.openbase.type.domotic.unit.UnitConfigType.UnitConfig;
 
 /**
  *
