@@ -20,7 +20,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<rsb.version>[0.17,0.18-alpha)</rsb.version>
+		<dependency.rsx.version>[0.17,0.18-alpha)</dependency.rsx.version>
 		<rta.version>[1.4,1.5-alpha)</rta.version>
 		<rsu.version>[0.4,0.5-alpha)</rsu.version>
 		<dal.version>[1.6,1.7-alpha)</dal.version>
@@ -34,22 +34,22 @@
 		<dependency>
 			<groupId>rsb</groupId>
 			<artifactId>rsb</artifactId>
-			<version>${rsb.version}</version>
+			<version>${dependency.rsx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>rsb</groupId>
 			<artifactId>rst</artifactId>
-			<version>${rsb.version}</version>
+			<version>${dependency.rsx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>rsb</groupId>
 			<artifactId>rst-sandbox</artifactId>
-			<version>${rsb.version}</version>
+			<version>${dependency.rsx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>rsb</groupId>
 			<artifactId>rst-experimental</artifactId>
-			<version>${rsb.version}</version>
+			<version>${dependency.rsx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openbase.bco</groupId>
