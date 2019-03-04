@@ -8,9 +8,9 @@ import org.openbase.jul.exception.EnumNotSupportedException;
 import org.openbase.jul.exception.InvalidStateException;
 import org.openbase.jul.exception.NotAvailableException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
-import org.openbase.jul.extension.rsb.scope.ScopeGenerator;
 import org.openbase.jul.extension.type.processing.MetaConfigPool;
 import org.openbase.jul.extension.type.processing.MetaConfigVariableProvider;
+import org.openbase.jul.extension.type.processing.ScopeProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rsb.RSBException;
@@ -75,7 +75,7 @@ public class HighlightConfigGenerator {
                     targetUnitConfig = Registries.getUnitRegistry(false).getUnitConfigByAlias(targetObject);
                 } catch (NotAvailableException exx) {
                     try {
-                        targetUnitConfig = Registries.getUnitRegistry(false).getUnitConfigByScope(ScopeGenerator.generateScope(targetObject));
+                        targetUnitConfig = Registries.getUnitRegistry(false).getUnitConfigByScope(ScopeProcessor.generateScope(targetObject));
                     } catch (NotAvailableException exxx) {
                         try {
                             targetUnitConfig = Registries.getUnitRegistry(false).getUnitConfigById(targetObject);

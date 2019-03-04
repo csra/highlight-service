@@ -5,18 +5,16 @@
  */
 package de.citec.csra.highlight;
 
-//import de.citec.csra.task.srv.TaskServer;
-
 import de.citec.csra.highlight.cfg.Defaults;
 import de.citec.csra.task.srv.TaskServer;
 import org.openbase.jps.core.JPService;
 import org.openbase.jps.preset.JPDebugMode;
+import org.openbase.jul.communication.controller.jp.JPScope;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.printer.ExceptionPrinter;
-import org.openbase.jul.extension.rsb.scope.jp.JPScope;
+import org.openbase.jul.extension.type.processing.ScopeProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rsb.Scope;
 import rsb.converter.DefaultConverterRepository;
 import rsb.converter.ProtocolBufferConverter;
 import rst.communicationpatterns.TaskStateType.TaskState;
@@ -33,7 +31,6 @@ public class HighlightService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HighlightService.class);
     private final static String SCOPEVAR = "SCOPE_HIGHLIGHT";
-    private static final Scope SCOPE = new Scope("/citec/csra/home/highlight");
 
     static {
         DefaultConverterRepository.getDefaultConverterRepository().addConverter(new ProtocolBufferConverter<>(TaskState.getDefaultInstance()));
@@ -47,9 +44,9 @@ public class HighlightService {
         try {
             JPService.setApplicationName(HighlightService.class);
             if (System.getenv().containsKey(SCOPEVAR)) {
-                JPService.registerProperty(JPScope.class, new Scope(System.getenv(SCOPEVAR)));
+                JPService.registerProperty(JPScope.class, ScopeProcessor.generateScope(System.getenv(SCOPEVAR)));
             } else {
-                JPService.registerProperty(JPScope.class, SCOPE);
+                JPService.registerProperty(JPScope.class, ScopeProcessor.generateScope("/citec/csra/home/highlight"));
             }
             JPService.registerProperty(JPDebugMode.class);
             JPService.parseAndExitOnError(args);

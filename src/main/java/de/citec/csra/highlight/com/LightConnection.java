@@ -13,7 +13,7 @@ import org.openbase.bco.registry.remote.Registries;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.exception.InvalidStateException;
-import org.openbase.jul.extension.rsb.scope.ScopeGenerator;
+import org.openbase.jul.extension.type.processing.ScopeProcessor;
 import org.openbase.type.vision.HSBColorType.HSBColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,7 +162,7 @@ public class LightConnection implements RemoteConnection<Stage> {
     @Override
     public String getAddress() {
         try {
-            return ScopeGenerator.generateStringRep(unitConfig.getScope());
+            return ScopeProcessor.generateStringRep(unitConfig.getScope());
         } catch (CouldNotPerformException ex) {
             LOGGER.warn("Could not infer scope of unit ''{0}'' ({1}), returning null.", unitConfig.getLabel(), ex);
             return null;
