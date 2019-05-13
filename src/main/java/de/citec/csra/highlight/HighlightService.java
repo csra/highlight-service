@@ -55,7 +55,7 @@ public class HighlightService {
             Defaults.loadDefaults();
 
             // execute highlight task handler
-            new TaskServer(JPService.getProperty(JPScope.class).getValue().toString(), new HighlightTaskHandler()).execute();
+            new TaskServer(ScopeProcessor.generateStringRep(JPService.getProperty(JPScope.class).getValue()), new HighlightTaskHandler()).execute();
         } catch (InterruptedException ex) {
             throw ex;
         } catch (Exception ex) {
