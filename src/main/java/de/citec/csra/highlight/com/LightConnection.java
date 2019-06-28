@@ -39,7 +39,7 @@ public class LightConnection implements RemoteConnection<Stage> {
     private final static long ANIMATION_RATE = 600;
 
     private final long timeout;
-    private final HSBColor BLUE_COLOR = HSBColor.newBuilder().setHue(247).setSaturation(100).setBrightness(100).build();
+    private final HSBColor BLUE_COLOR = HSBColor.newBuilder().setHue(247d).setSaturation(1d).setBrightness(1d).build();
     private UnitConfig unitConfig;
     private State originalPowerState;
     private HSBColor originalColor;
