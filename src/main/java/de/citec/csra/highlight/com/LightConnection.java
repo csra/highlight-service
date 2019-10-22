@@ -6,6 +6,7 @@
 package de.citec.csra.highlight.com;
 
 import de.citec.csra.highlight.cfg.Configurable.Stage;
+import org.openbase.bco.dal.remote.action.RemoteAction;
 import org.openbase.bco.dal.remote.layer.unit.ColorableLightRemote;
 import org.openbase.bco.dal.remote.layer.unit.LightRemote;
 import org.openbase.bco.dal.remote.layer.unit.Units;
@@ -14,6 +15,12 @@ import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.InstantiationException;
 import org.openbase.jul.exception.InvalidStateException;
 import org.openbase.jul.extension.type.processing.ScopeProcessor;
+import org.openbase.type.domotic.action.ActionDescriptionType.ActionDescription;
+import org.openbase.type.domotic.action.ActionEmphasisType.ActionEmphasis.Category;
+import org.openbase.type.domotic.action.ActionInitiatorType.ActionInitiator.InitiatorType;
+import org.openbase.type.domotic.action.ActionParameterType.ActionParameter;
+import org.openbase.type.domotic.action.ActionParameterType.ActionParameter.Builder;
+import org.openbase.type.domotic.action.ActionPriorityType.ActionPriority.Priority;
 import org.openbase.type.vision.HSBColorType.HSBColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import static de.citec.csra.rst.util.StringRepresentation.shortString;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.openbase.type.domotic.state.PowerStateType.PowerState.State.OFF;
 import static org.openbase.type.domotic.state.PowerStateType.PowerState.State.ON;
 
@@ -43,6 +51,23 @@ public class LightConnection implements RemoteConnection<Stage> {
     private UnitConfig unitConfig;
     private State originalPowerState;
     private HSBColor originalColor;
+
+    private static final ActionParameter ACTION_PARAMETER;
+
+    /**
+     * These are parameters used for any highlighting actions.
+     * The priority is high because highlighting always refers to an ongoing system - human interaction.
+     */
+    static {
+        final Builder actionParameterBuilder = ActionParameter.newBuilder();
+        actionParameterBuilder.getActionInitiatorBuilder().setInitiatorType(InitiatorType.SYSTEM);
+        actionParameterBuilder.setSchedulable(false);
+        actionParameterBuilder.setSchedulable(false);
+        actionParameterBuilder.addCategory(Category.COMFORT);
+        actionParameterBuilder.setPriority(Priority.HIGH);
+        actionParameterBuilder.setExecutionTimePeriod(SECONDS.toMicros(5));
+        ACTION_PARAMETER = actionParameterBuilder.build();
+    }
 
     public LightConnection(final UnitConfig unitConfig, long timeout) throws InstantiationException {
         try {
@@ -77,6 +102,7 @@ public class LightConnection implements RemoteConnection<Stage> {
 
     @Override
     public void send(Stage argument) throws Exception {
+
         switch (unitConfig.getUnitType()) {
             case COLORABLE_LIGHT:
                 ColorableLightRemote colorableLight = Units.getFutureUnit(unitConfig, true, Units.COLORABLE_LIGHT).get(timeout, MILLISECONDS);
@@ -84,40 +110,30 @@ public class LightConnection implements RemoteConnection<Stage> {
                     case INIT:
                         break;
                     case PREPARE:
-                        originalPowerState = colorableLight.getPowerState().getValue();
-                        LOGGER.info("Storing light power ''{}'' as ''{}''.", unitConfig.getLabel(), shortString(originalPowerState));
-                        if (originalPowerState == State.ON) {
-                            LOGGER.info("Storing light color ''{}'' as ''{}''.", colorableLight.getLabel(), shortString(originalColor));
-                            originalColor = colorableLight.getHSBColor();
-                        } else {
-                            originalColor = null;
-                        }
                         break;
                     case EXEC:
                         LOGGER.info("Execute light ''{}'' on / off animation.", colorableLight.getLabel());
-                        colorableLight.setColor(BLUE_COLOR).get(timeout, TimeUnit.MILLISECONDS);
+                        colorableLight.setColor(BLUE_COLOR, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        colorableLight.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        colorableLight.setPowerState(OFF, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        colorableLight.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        colorableLight.setColor(BLUE_COLOR, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        colorableLight.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        colorableLight.setPowerState(OFF, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        colorableLight.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        colorableLight.setColor(BLUE_COLOR, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        colorableLight.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        colorableLight.setPowerState(OFF, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        colorableLight.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        colorableLight.setColor(BLUE_COLOR, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        colorableLight.setPowerState(OFF, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
+                        colorableLight.setColor(BLUE_COLOR, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
+                        Thread.sleep(ANIMATION_RATE);
                         break;
                     case RESET:
-                        if (originalColor != null) {
-                            LOGGER.info("Reset light color ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(originalColor));
-                            colorableLight.setColor(originalColor).get(timeout, TimeUnit.MILLISECONDS);
-                        } else {
-                            LOGGER.info("Reset light power ''{}'' to ''{}''.", colorableLight.getLabel(), shortString(originalPowerState));
-                            colorableLight.setPowerState(PowerState.newBuilder().setValue(originalPowerState).build()).get(timeout, TimeUnit.MILLISECONDS);
-                        }
-
+                        colorableLight.setPowerState(OFF, ACTION_PARAMETER).get(timeout, MILLISECONDS);
                         break;
                 }
                 break;
@@ -128,29 +144,25 @@ public class LightConnection implements RemoteConnection<Stage> {
                     case INIT:
                         break;
                     case PREPARE:
-                        originalPowerState = light.getPowerState().getValue();
-                        LOGGER.info("Storing dimmer power ''{}'' as ''{}''.", light.getLabel(), shortString(originalPowerState));
-                        LOGGER.info("Set dimmer power ''{}'' to ''{}''.", light.getLabel(), shortString(ON));
                         break;
                     case EXEC:
                         LOGGER.info("Execute light ''{}'' on / off animation.", light.getLabel());
-                        light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        light.setPowerState(ON, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        light.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        light.setPowerState(OFF, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        light.setPowerState(ON, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        light.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        light.setPowerState(OFF, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        light.setPowerState(ON, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        light.setPowerState(OFF).get(timeout, TimeUnit.MILLISECONDS);
+                        light.setPowerState(OFF, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         Thread.sleep(ANIMATION_RATE);
-                        light.setPowerState(ON).get(timeout, TimeUnit.MILLISECONDS);
+                        light.setPowerState(ON, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         break;
                     case RESET:
-                        LOGGER.info("Reset dimmer power ''{}'' to ''{}''.", light.getLabel(), shortString(originalPowerState));
-                        light.setPowerState(PowerState.newBuilder().setValue(originalPowerState).build()).get(timeout, TimeUnit.MILLISECONDS);
+                        light.setPowerState(OFF, ACTION_PARAMETER).get(timeout, TimeUnit.MILLISECONDS);
                         break;
                 }
                 break;

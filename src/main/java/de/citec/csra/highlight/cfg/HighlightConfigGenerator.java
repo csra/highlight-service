@@ -121,7 +121,7 @@ public class HighlightConfigGenerator {
                                 final Vec3DDouble position = Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig);
 
                                 // 5m lookup radius
-                                final List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinate(position, LOOKUP_RADIUS, UnitType.LIGHT);
+                                final List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinateAndRadiusAndUnitType(position, LOOKUP_RADIUS, UnitType.LIGHT);
                                 if (closeUnitList.isEmpty()) {
                                     throw new CouldNotPerformException("Could not find any light close to the given target!");
                                 }

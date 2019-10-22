@@ -7,6 +7,7 @@ package de.citec.csra.highlight;
 
 import de.citec.csra.highlight.cfg.Defaults;
 import de.citec.csra.task.srv.TaskServer;
+import org.openbase.bco.registry.remote.login.BCOLogin;
 import org.openbase.jps.core.JPService;
 import org.openbase.jps.preset.JPDebugMode;
 import org.openbase.jul.communication.controller.jp.JPScope;
@@ -50,6 +51,8 @@ public class HighlightService {
             }
             JPService.registerProperty(JPDebugMode.class);
             JPService.parseAndExitOnError(args);
+
+            BCOLogin.getSession().loginBCOUser();
 
             // preload configurations
             Defaults.loadDefaults();
