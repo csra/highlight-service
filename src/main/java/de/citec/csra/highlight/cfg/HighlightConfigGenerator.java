@@ -3,6 +3,7 @@ package de.citec.csra.highlight.cfg;
 import de.citec.csra.highlight.com.InformerConnection;
 import de.citec.csra.highlight.com.MethodCallConnection;
 import org.openbase.bco.registry.remote.Registries;
+import org.openbase.bco.registry.unit.lib.UnitRegistry;
 import org.openbase.jul.exception.CouldNotPerformException;
 import org.openbase.jul.exception.EnumNotSupportedException;
 import org.openbase.jul.exception.InvalidStateException;
@@ -20,6 +21,7 @@ import rst.hri.HighlightTargetType.HighlightTarget.Modality;
 import org.openbase.type.math.Vec3DDoubleType.Vec3DDouble;
 
 import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -118,17 +120,17 @@ public class HighlightConfigGenerator {
                                 return new LightConfiguration(targetUnitConfig);
                             default:
                                 // lookup next light to target
-                                final Vec3DDouble position = Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig);
+                                final Vec3DDouble position = Registries.getUnitRegistry().getUnitPositionGlobalVec3DDouble(targetUnitConfig).get(UnitRegistry.RCT_TIMEOUT, TimeUnit.MILLISECONDS);
 
                                 // 5m lookup radius
-                                final List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinateAndRadiusAndUnitType(position, LOOKUP_RADIUS, UnitType.LIGHT);
+                                final List<UnitConfig> closeUnitList = Registries.getUnitRegistry().getUnitConfigsByCoordinateAndRadiusAndUnitType(position, LOOKUP_RADIUS, UnitType.LIGHT).get(UnitRegistry.RCT_TIMEOUT, TimeUnit.MILLISECONDS);
                                 if (closeUnitList.isEmpty()) {
                                     throw new CouldNotPerformException("Could not find any light close to the given target!");
                                 }
                                 return new LightConfiguration(closeUnitList.get(0));
                         }
 
-                    } catch (CouldNotPerformException ex) {
+                    } catch (CouldNotPerformException | TimeoutException | ExecutionException | CancellationException ex) {
                         throw new CouldNotPerformException("Could highlight next light!", ex);
                     }
                 case GAZE:
@@ -170,11 +172,10 @@ public class HighlightConfigGenerator {
                             return new LightConfiguration(targetUnitConfig);
                         // otherwise use the projector for highlighting
                         default:
-                            return new ProjectorConfiguration(Registries.getUnitRegistry().getUnitPositionGlobal(targetUnitConfig));
-
+                            return new ProjectorConfiguration(Registries.getUnitRegistry().getUnitPositionGlobal(targetUnitConfig).get(UnitRegistry.RCT_TIMEOUT, TimeUnit.MILLISECONDS));
                     }
             }
-        } catch (final CouldNotPerformException ex) {
+        } catch (final CouldNotPerformException | TimeoutException | ExecutionException | CancellationException ex) {
             throw new CouldNotPerformException("Could not generate highlight configuration!", ex);
         }
     }
